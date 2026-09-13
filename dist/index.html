@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BookPilot — бесплатный браузерный AI-агент для выбора следующей книги." />
+    <title>BookPilot — AI-агент для книг</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://openlibrary.org" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="BookPilot, на главную"><span class="brand-mark">B</span><span>BookPilot</span></a>
+        <nav aria-label="Основная навигация">
+          <button class="nav-btn active" data-view="agent">Агент</button>
+          <button class="nav-btn" data-view="library">Моя библиотека <span id="library-count">0</span></button>
+          <button class="nav-btn" data-view="how">Как это работает</button>
+        </nav>
+        <button class="icon-btn" id="clear-data" title="Очистить локальные данные" aria-label="Очистить локальные данные">↺</button>
+      </header>
+      <section id="agent-view" class="view active">
+        <aside class="profile-panel panel"><p class="eyebrow">ВАШ ПРОФИЛЬ</p><h2>Вкус читателя</h2><p class="muted">Отметьте понравившиеся книги — агент учтёт их в следующих подборках.</p><form id="profile-form" class="stack"><label>Любимые жанры<input id="genres" placeholder="фэнтези, детектив, нон-фикшн" /></label><label>Не предлагать<input id="avoid" placeholder="хоррор, грустные финалы" /></label><label>Комфортный объём<select id="length"><option value="any">Любой</option><option value="short">До 300 стр.</option><option value="medium">300–450 стр.</option><option value="long">От 450 стр.</option></select></label><button class="secondary" type="submit">Сохранить профиль</button></form><div class="privacy-note"><span>⌁</span><p>Данные хранятся только в вашем браузере.</p></div></aside>
+        <section class="workspace"><div class="workspace-heading"><div><p class="eyebrow">ЛОКАЛЬНЫЙ AI-АГЕНТ</p><h1>Что почитаем?</h1></div><div id="model-status" class="status">AI не загружен</div></div><div class="prompt-card"><label class="sr-only" for="query">Опишите, что хотите почитать</label><textarea id="query" rows="3" placeholder="Например: Хочу уютное фэнтези на пару вечеров, без мрачности"></textarea><div class="prompt-actions"><button id="load-model" class="ghost" type="button">Включить AI (≈1 ГБ)</button><button id="recommend" class="primary" type="button">Подобрать книги <span>→</span></button></div><p id="progress" class="progress" aria-live="polite"></p></div><div id="agent-log" class="agent-log" aria-live="polite"><span class="spark">✦</span><span>Я готова искать. Расскажите, какое настроение у следующей книги?</span></div><div id="results" class="results empty-state"><div class="empty-illustration">⌁</div><h2>Персональная подборка появится здесь</h2><p>Агент проверит каталог, вашу историю и ограничения, прежде чем рекомендовать книгу.</p></div></section>
+      </section>
+      <section id="library-view" class="view library-view"><div class="library-header"><div><p class="eyebrow">ПАМЯТЬ АГЕНТА</p><h1>Моя библиотека</h1><p class="muted">Оценки помогают BookPilot узнавать ваш вкус.</p></div><button id="open-add-book" class="primary">Добавить книгу</button></div><div id="library" class="library-grid empty-state"><h2>Пока здесь пусто</h2><p>Добавьте прочитанную книгу или сохраните рекомендацию.</p></div></section>
+      <section id="how-view" class="view how-view"><p class="eyebrow">ПРОЗРАЧНЫЙ AI</p><h1>Как BookPilot принимает решения</h1><div class="steps"><article><span>01</span><h2>Понимает запрос</h2><p>Небольшая открытая модель Qwen2.5 работает прямо в браузере и выделяет настроение, жанр и ограничения.</p></article><article><span>02</span><h2>Использует инструменты</h2><p>Агент ищет реальные книги в Open Library, читает ваш локальный профиль и исключает прочитанное.</p></article><article><span>03</span><h2>Проверяет выбор</h2><p>Кандидаты ранжируются по совпадению с запросом, оценкам и комфортному объёму.</p></article></div><div class="tech-note"><strong>Ноль API-ключей.</strong> Модель и профиль остаются на устройстве посетителя.</div></section>
+    </main>
+    <dialog id="add-dialog"><form method="dialog" id="add-book-form"><div class="dialog-top"><h2>Добавить прочитанную книгу</h2><button value="cancel" class="close">×</button></div><label>Название <input id="book-title" required placeholder="Например, Пиранези" /></label><label>Автор <input id="book-author" placeholder="Необязательно" /></label><label>Ваша оценка <select id="book-rating"><option value="5">5 — очень понравилась</option><option value="4">4 — понравилась</option><option value="3">3 — нормально</option><option value="2">2 — не моё</option><option value="1">1 — не понравилась</option></select></label><menu><button value="cancel" class="secondary">Отмена</button><button value="default" class="primary">Сохранить</button></menu></form></dialog>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
